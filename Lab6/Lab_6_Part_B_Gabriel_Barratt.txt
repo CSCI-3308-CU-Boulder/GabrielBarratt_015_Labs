@@ -1,0 +1,102 @@
+Lab #6 Take Home
+Your name: Gabriel Barratt 
+
+
+---------------------------------------- Question 1 Query ---------------------------------------- 
+CREATE VIEW order_quantity AS SELECT ship_city, count(ship_city) AS "total_quantity" FROM orders GROUP BY ship_city;
+SELECT * FROM order_quantity ORDER BY total_quantity DESC LIMIT 1;
+
+										put query here
+
+---------------------------------------- Question 1 Results ---------------------------------------- 					
+ship_city    | total_quantity
+----------------+--------------
+ Rio de Janeiro |           34
+(1 row)
+										put result here	(output of the table)	
+
+---------------------------------------- Question 2 Query ---------------------------------------- 
+SELECT ship_city, product_name, quantity FROM products 
+INNER JOIN order_details ON products.product_id = order_details.product_id 
+INNER JOIN orders ON order_details.order_id = orders.order_id WHERE ship_city = 'Graz' AND quantity < 10
+ORDER BY quantity ASC;
+										put query here
+
+---------------------------------------- Question 2 Results ---------------------------------------- 					
+ship_city | quantity |    product_name
+-----------+----------+---------------------
+ Graz      |        5 | Sir Rodney's Scones
+ Graz      |        6 | Mascarpone Fabioli
+ Graz      |        9 | Carnarvon Tigers
+(3 rows)
+										put result here	(output of the table)	
+
+---------------------------------------- Question 3 Query ---------------------------------------- 
+CREATE VIEW average AS SELECT AVG(total_quantity) AS "avg_orders" FROM order_quantity;
+SELECT ship_city FROM order_amount, avg WHERE CAST(total_orders as integer) > CAST(avg_orders as integer);
+										put query here
+
+---------------------------------------- Question 3 Results ---------------------------------------- 					
+   ship_city
+----------------
+ Cork
+ Brandenburg
+ Frankfurt a.M.
+ Oulu
+ Seattle
+ Sao Paulo
+ Albuquerque
+ Marseille
+ Boise
+ Toulouse
+ Colchester
+ München
+ Tsawassen
+ London
+ Barquisimeto
+ Luleå
+ Lisboa
+ Bräcke
+ Graz
+ Cunewalde
+ Montréal
+ México D.F.
+ Buenos Aires
+ San Cristóbal
+ Rio de Janeiro
+(25 rows)
+										put result here	(output of the table)	
+
+---------------------------------------- Question 4 Query ---------------------------------------- 
+SELECT category_name, count(products.category_id) AS items FROM products 
+INNER JOIN categories ON categories.category_id = products.category_id 
+GROUP BY category_name 
+HAVING count(products.category_id) > 10;
+										put query here
+
+---------------------------------------- Question 4 Results ---------------------------------------- 					
+category_name | items
+---------------+-------
+ Beverages     |    12
+ Seafood       |    12
+ Condiments    |    12
+ Confections   |    13
+(4 rows)
+										put result here	(output of the table)	
+
+---------------------------------------- Question 5 Query ---------------------------------------- 
+CREATE VIEW product_quantity AS SELECT product_id, count(product_id) AS "amount" FROM order_details GROUP BY product_id;
+
+SELECT product_name, MAX(amount) FROM product_amount 
+INNER JOIN products ON product_quantity.product_id = products.product_id 
+GROUP BY product_name 
+ORDER BY max DESC 
+LIMIT 1;
+										put query here
+
+---------------------------------------- Question 5 Results ---------------------------------------- 					
+product_name    | max
+-------------------+-----
+ Gorgonzola Telino |  29
+(1 row)
+										put result here	(output of the table)	
